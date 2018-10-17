@@ -47,6 +47,8 @@ public class Lexer {
                 return new VariableOperation(1,arguments[1],localBB); //increase
             case "decr":
                 return new VariableOperation(2,arguments[1],localBB); //decrease
+            case "printval":
+                return new VariableOperation(3,arguments[1],localBB); //decrease
             case "while":
                 //in case of while, create new executable block from all parsed lines to the end block
                 ExecutableBlock loopExecutionFlow = parse();

@@ -25,6 +25,12 @@ public class BB {
         fileInput.close();
     }
 
+    public void checkVariable(String variableIdentifier) {
+        if (!variablesList.containsKey(variableIdentifier)) {
+            panic("Variable " + variableIdentifier + " used but not declared");
+        }
+    }
+
     public static void main(String[] args) throws FileNotFoundException {
         BB myBB = new BB();
         Lexer myLexer = new Lexer(myBB);

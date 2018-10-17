@@ -28,7 +28,6 @@ class ExecutableBlock extends Expr {
         blocks = new Vector<Expr>();
     }
     public void execute() {
-        System.out.println("Running executable block");
         Iterator<Expr> iterator = blocks.iterator();
         while(iterator.hasNext()) {
             Expr nextBlock = iterator.next(); //iterate through list of blocks and execute them
@@ -42,7 +41,7 @@ class ExecutableBlock extends Expr {
 }
 
 class VariableOperation extends Expr {
-    public int operationType; //Possible values of operation type: 0 - clear 1 - increase 2- decrease
+    public int operationType; //Possible values of operation type: 0 - clear 1 - increase 2- decrease 3-print value
     public String operationVariableIdentifier; //Variable identifier
 
     //constructor method
@@ -55,31 +54,26 @@ class VariableOperation extends Expr {
     public void execute(){
         if (operationType == 0) {
             //if clearing variable no need to check whether it exists
-            System.out.println("Clearing variable: " + operationVariableIdentifier);
             localBB.variablesList.put(operationVariableIdentifier, new Integer(0));
-            System.out.println(localBB.variablesList.get(operationVariableIdentifier));
         }
         else {
             //in other cases, first check the variable list (HashMap), whether variable exists
-            System.out.println("Checking whether variable exists... ");
-            if (!localBB.variablesList.containsKey(operationVariableIdentifier)) {
-                localBB.panic("Variable " + operationVariableIdentifier + " used but not declared");
-            }
-            //given identifier, increase the value of V from hashmap where variable identifier is a Key
-            else if (operationType == 1) {
-                System.out.println("Increasing variable: " + operationVariableIdentifier);
-                int currentValue = localBB.variablesList.get(operationVariableIdentifier);
-                currentValue++;
-                localBB.variablesList.put(operationVariableIdentifier, new Integer(currentValue));
-                System.out.println("Value after incrementation: " + currentValue);
-            }
-            else {
-                //same case as with increase
-                System.out.println("Decreasing variable: " + operationVariableIdentifier);
-                int currentValue = localBB.variablesList.get(operationVariableIdentifier);
-                currentValue--;
-                localBB.variablesList.put(operationVariableIdentifier, new Integer(currentValue));
-                System.out.println("Value after decrementation: " + currentValue);
+            localBB.checkVariable(operationVariableIdentifier);
+            int currentValue = localBB.variablesList.get(operationVariableIdentifier);
+            switch(operationType) {
+                case 1:
+                    currentValue++;
+                    localBB.variablesList.put(operationVariableIdentifier, new Integer(currentValue));
+                    break;
+                case 2:
+                    //same case as with increase
+                    currentValue--;
+                    localBB.variablesList.put(operationVariableIdentifier, new Integer(currentValue));
+                    break;
+                case 3:
+                    System.out.println(currentValue);
+                    break;
+
             }
 
         }
@@ -101,15 +95,11 @@ class LoopExpression extends Expr {
 
     public void execute() {
         //first check whether condition variable exists
-        System.out.println("Checking whether variable exists... ");
-        if (!localBB.variablesList.containsKey(conditionVariableIdentifier)) {
-            localBB.panic("Variable " + conditionVariableIdentifier + " used but not declared");
-        }
+        localBB.checkVariable(conditionVariableIdentifier);
         //compare condition variable to checked variable
         int conditionVariableValue = localBB.variablesList.get(conditionVariableIdentifier);
         while(conditionVariableValue!=valueNotEqual) {
             //if condition is met, run the execution flow
-            System.out.println("Executing loop. Control variable value is " + conditionVariableValue);
             operationList.execute();
             conditionVariableValue = localBB.variablesList.get(conditionVariableIdentifier);
         }
