@@ -17,6 +17,7 @@ public class Expr {
 //1 - executable block
 //2 - operation on variable
 //3 - loops operation
+//4 - if operation
 
 //executable block, a list of blocks
 class ExecutableBlock extends Expr {

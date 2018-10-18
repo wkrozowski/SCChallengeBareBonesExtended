@@ -34,6 +34,7 @@ public class BB {
     public static void main(String[] args) throws FileNotFoundException {
         BB myBB = new BB();
         Lexer myLexer = new Lexer(myBB);
+        /*
         System.out.println("Welcome to Bare Bones interpreter, enter the path to source code file:");
         Scanner textInput = new Scanner(System.in);
         String path = textInput.nextLine();
@@ -42,11 +43,25 @@ public class BB {
         ExecutableBlock root = myLexer.parse(); //create executable node from parsed source code
         root.execute(); //execute the master node
         myBB.closeFile();
+        */
+
+        /*
+        myBB.variablesList.put("A", new Integer(2));
+        myBB.variablesList.put("B", new Integer(4));
+        Value myValue1 = new ConstantValue(8, myBB);
+        Value myValue2 = new VariableValue("B",myBB);
+        Value rootValue = new OperationValue(8, myBB);
+        rootValue.assignLeft(myValue1);
+        rootValue.assignRight(myValue2);
+        System.out.println(rootValue.resolveValue());
+        */
+        Value myValue = myLexer.parseValue("2+7*10==72");
+        System.out.println(myValue.resolveValue());
     }
 
     public void panic(String errorMessage) {
         System.out.println("PANIC: " + errorMessage);
-        closeFile();
+        //closeFile();
         System.exit(0);
     }
 }
