@@ -81,28 +81,26 @@ class VariableOperation extends Expr {
     }
 }
 class LoopExpression extends Expr {
-    public String conditionVariableIdentifier; //checked variable identifier
-    public int valueNotEqual; //value compared to variable of given identifier
-    public ExecutableBlock operationList; //loop operation flow
 
+    public ExecutableBlock operationList; //loop operation flow
+    public String valueToParse;    public Value myValue;
+    public Value loopValue;
     //constructor method for loop expression
-    public LoopExpression(String initialConditionVariableIdentifier, int initialValueNotEqual, ExecutableBlock initialOperationList, BB usedBB) {
+
+    public LoopExpression(Value initialLoopValue,ExecutableBlock initialOperationList, BB usedBB) {
         localBB = usedBB;
         type = 3;
-        valueNotEqual= initialValueNotEqual;
-        conditionVariableIdentifier = initialConditionVariableIdentifier;
+        loopValue = initialLoopValue;
         operationList = initialOperationList;
     }
 
     public void execute() {
-        //first check whether condition variable exists
-        localBB.checkVariable(conditionVariableIdentifier);
-        //compare condition variable to checked variable
-        int conditionVariableValue = localBB.variablesList.get(conditionVariableIdentifier);
-        while(conditionVariableValue!=valueNotEqual) {
+
+        int conditionVariableValue = loopValue.resolveValue();
+        while(conditionVariableValue!=0) {
             //if condition is met, run the execution flow
             operationList.execute();
-            conditionVariableValue = localBB.variablesList.get(conditionVariableIdentifier);
+            conditionVariableValue =  loopValue.resolveValue();
         }
     }
 }
