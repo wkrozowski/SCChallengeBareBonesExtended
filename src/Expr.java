@@ -105,6 +105,24 @@ class LoopExpression extends Expr {
         }
     }
 }
+
+class IfExpression extends Expr {
+    Value conditionValue;
+    ExecutableBlock caseIfTrue;
+    public IfExpression(Value initialConditionValue, ExecutableBlock initialCaseIfTrue, BB initialBB) {
+        type = 4;
+        conditionValue = initialConditionValue;
+        caseIfTrue = initialCaseIfTrue;
+        localBB = initialBB;
+    }
+
+    public void execute() {
+        int evaluatedConditionValue = conditionValue.resolveValue();
+        if(evaluatedConditionValue==1) {
+            caseIfTrue.execute();
+        }
+    }
+}
 class AssignExpression extends Expr {
     Value valueToAssign;
     String variableIdentifier;

@@ -79,6 +79,13 @@ public class Lexer {
 
                 Value parsedValueToAssign = localValueParser.parseValue(line);
                 return new AssignExpression(variableIdentifier, parsedValueToAssign, localBB);
+            case "if":
+                line = line.replaceAll("if","");
+                line = line.replaceAll("do","");
+                Value parsedConditionValue = localValueParser.parseValue(line);
+                ExecutableBlock conditionFlow = parse();
+                return new IfExpression(parsedConditionValue, conditionFlow, localBB);
+
             case "end":
                 return null;
         }

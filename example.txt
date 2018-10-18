@@ -1,5 +1,8 @@
 clear X;
 set X to 7;
-clear Y;
-set Y to 4+X*5;
-printval Y;
+if X==7 do;
+    while X>0 do;
+        printval X;
+        decr X;
+    end;
+end;
