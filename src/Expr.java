@@ -18,6 +18,7 @@ public class Expr {
 //2 - operation on variable
 //3 - loops operation
 //4 - if operation
+//5 - assign operation
 
 //executable block, a list of blocks
 class ExecutableBlock extends Expr {
@@ -102,5 +103,20 @@ class LoopExpression extends Expr {
             operationList.execute();
             conditionVariableValue =  loopValue.resolveValue();
         }
+    }
+}
+class AssignExpression extends Expr {
+    Value valueToAssign;
+    String variableIdentifier;
+    public AssignExpression (String initialVariableIdentifier, Value initialValueToAssign, BB usedBB) {
+        type = 5;
+        valueToAssign = initialValueToAssign;
+        variableIdentifier = initialVariableIdentifier;
+        localBB = usedBB;
+    }
+    public void execute() {
+        localBB.checkVariable(variableIdentifier);
+        int valueOfBlock = valueToAssign.resolveValue();
+        localBB.variablesList.put(variableIdentifier, new Integer(valueOfBlock));
     }
 }

@@ -66,6 +66,19 @@ public class Lexer {
 
                 //assign loop execution flow, to the loop block and return block
                 return new LoopExpression(parsedValue, loopExecutionFlow, localBB);
+            case "set":
+                line = line.replaceAll("set","");
+
+                String variableIdentifier = line.replaceAll("^\\s?","");
+                variableIdentifier = line.replaceAll("to\\s?.*$","");
+                variableIdentifier = variableIdentifier.replaceAll("\\s?","");
+
+                line = line.substring(variableIdentifier.length()+1, line.length());
+
+                line = line.replaceAll("to","");
+
+                Value parsedValueToAssign = localValueParser.parseValue(line);
+                return new AssignExpression(variableIdentifier, parsedValueToAssign, localBB);
             case "end":
                 return null;
         }

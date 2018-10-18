@@ -1,11 +1,5 @@
 clear X;
-incr X;
-incr X;
-incr X;
-incr X;
+set X to 7;
 clear Y;
-while X-1>0 do;
-    decr X;
-    incr Y;
-end;
+set Y to 4+X*5;
 printval Y;
